@@ -9,6 +9,7 @@
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
+// @downloadURL  https://code.amazon.com/packages/HushatnaScripts/blobs/mainline/--/sim-standup.user.js?raw=1
 // ==/UserScript==
 $(document).ready(function () {
 
