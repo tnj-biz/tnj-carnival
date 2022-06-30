@@ -1,15 +1,16 @@
 // ==UserScript==
-// @name         New Userscript
+// @name         Msho
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
+// @version      0.2
+// @description  decoration
 // @author       You
 // @match        https://supplier.meesho.com/panel/msm2w/orders
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=meesho.com
-// @require  http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
 // @downloadURL  https://github.com/tnj-biz/tnj-carnival/blob/main/msho-tampermonkey.js?raw=1
+// @updateURL    https://github.com/tnj-biz/tnj-carnival/blob/main/msho-tampermonkey.js?raw=1
 // ==/UserScript==
 $(document).ready(function () {
 
