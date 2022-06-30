@@ -9,7 +9,7 @@
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
-// @downloadURL  https://code.amazon.com/packages/HushatnaScripts/blobs/mainline/--/sim-standup.user.js?raw=1
+// @downloadURL  https://github.com/tnj-biz/tnj-carnival/blob/main/msho-tampermonkey.js?raw=1
 // ==/UserScript==
 $(document).ready(function () {
 
@@ -172,6 +172,7 @@ $(document).ready(function () {
             "F0033" : "F33",
             "FJ030" : "F30",
             "FJ031" : "F31",
+            "F0031" : "F31",
             "F0032" : "F32",
 
          };
