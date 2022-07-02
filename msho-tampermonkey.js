@@ -41,10 +41,13 @@ $(document).ready(function () {
                     var orderInfo = document.getElementsByClassName("order-product-info") // Will pending + cancelled + shipped
                     var skuCountPending = {};
                     var totalPending = 0;
+
+                    console.log("Check sizes");
+                    console.log(orderInfo.length);
                     for (order of orderInfo) {
-                        if(order.children.length == 4) {
+                        if(order.children.length == 3) {
                             //Filtered items for pending as it has 4 childs, 2 extra for SLA status as compared to shipped and cancelled
-                            var sku = order.querySelector(".order-product-size").querySelectorAll(".product-sku.text-ellipsis:not(.product-id)")[0].getElementsByTagName("span")[1];
+                            var sku = order.querySelector(".order-product-size").querySelectorAll(".product-sku.text-ellipsis.display-block:not(.product-id)")[0].getElementsByTagName("span")[1];
 
                             if(sku != undefined ){
                                 var idPost=sku.innerHTML;
@@ -197,7 +200,7 @@ $(document).ready(function () {
         return skuCountOutput;
     }
 
-    function sortTable(table, filterColIndex) {
+    function sortTable(table, filterColIndex, isFilterColString = false) {
         var rows, switching, i, x, y, shouldSwitch;
         switching = true;
         /*Make a loop that will continue until  no switching has been done:*/
@@ -213,10 +216,20 @@ $(document).ready(function () {
                 x = rows[i].getElementsByTagName("TD")[filterColIndex];
                 y = rows[i + 1].getElementsByTagName("TD")[filterColIndex];
                 //check if the two rows should switch place:
+
+                if(!isFilterColString) {
+
                 if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
                     //if so, mark as a switch and break the loop:
                     shouldSwitch = true;
                     break;
+                }
+                } else {
+                    if (x.innerHTML < y.innerHTML) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
                 }
             }
             if (shouldSwitch) {
@@ -233,11 +246,22 @@ $(document).ready(function () {
         console.log(orderHeadings[0].getElementsByTagName("TD")[1].innerHTML.split(",")[0]);
         console.log(orderHeadings[0].getElementsByTagName("TD")[1].innerHTML.split(",")[1]);
 
+        var todaysDate = new Date();
+        var yesterdaysDate = new Date();
+        yesterdaysDate.setDate(todaysDate.getDate() - 1);
+
+
+
         var dateTimeCatToOrderCount = {};
         var dateToOrderCount = {};
         for(orderHeading of orderHeadings) {
             var dateTime = orderHeading.getElementsByTagName("TD")[1].innerHTML.split(",");
             var date = dateTime[0];
+
+            if(!((parseInt(date.split(" ")[0]) === todaysDate.getDate()) || (parseInt(date.split(" ")[0]) === yesterdaysDate.getDate()))) {
+                //skip the order
+                continue;
+            }
 
             var time = dateTime[1].trim();
 
@@ -245,13 +269,13 @@ $(document).ready(function () {
             var hr = parseInt(time.split(":")[0]);
             var ampm = time.split(" ")[1];
             if(ampm == "AM") {
-               if(hr >= 6) {
+               if(hr >= 6 && hr <= 11) {
                    key = date + "-(06-12hr)";
                } else {
                    key = date + "-(00_06hr)";
                }
             } else {
-               if(hr >= 6) {
+               if(hr >= 6 && hr <= 11) {
                    key = date + "-(18_24hr)";
                } else {
                    key = date + "-(12_18hr)";
@@ -287,8 +311,10 @@ $(document).ready(function () {
     }
 
     function createOrderByTimeTable(element ,dateKeyToPerc, dateTimeCatToOrderCount) {
+        element.append("<hr>");
         element.append("<h3>When do we get order in the day ?</h3></br>");
 
+        console.log(new Date().getDate());
 
         // creating table elements
         var table = document.createElement('table');
@@ -336,14 +362,22 @@ $(document).ready(function () {
             row.appendChild(cell2);
             cell3.appendChild(document.createTextNode(dateKeyToPerc[key]));
             row.appendChild(cell3);
+
+
+            if(parseInt(key.split(" ")[0]) %2 == 0) {
+               row.style.backgroundColor = "lightgrey";
+            }
+
             tableBody.appendChild(row);
         }
 
         table.appendChild(tableBody);
         table.style.border = 'solid 1px black';
         table.style.fontfamily = 'arial, sans-serif';
-        sortTable(table, 0);
+        sortTable(table, 0, true);
         element.append(table);
+        element.append("<h6>*Only works well for last full day. It may include cancelled orders as well. Check at around midnight 12</h3></br>");
+
     }
 
 });
